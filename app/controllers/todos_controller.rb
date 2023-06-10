@@ -19,4 +19,28 @@ class TodosController < ApplicationController
       render json: @todo.errors, status: :unprocessable_entity
     end
   end
+  
+  def update
+    @todo = Todo.find(params[:id])
+  
+    if @todo.update(todo_params)
+      render json: @todo, status: :ok
+    else
+      render json: @todo.errors, status: :unprocessable_entity
+    end
+  end
+  def destroy
+    @todo = Todo.find(params[:id])
+    @todo.destroy
+    render status: :ok
+  end
+  
+  private
+  
+  def todo_params
+    params.require(:todo).permit(:content, :category, :done)
+  end
 end
+
+
+
